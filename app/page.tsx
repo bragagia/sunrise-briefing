@@ -38,7 +38,8 @@ export default async function Home() {
 
   return (
     <div className="text-justify text-gray-900 whitespace-pre-line font-hanken-grotesk mb-32">
-      <SubscriptionField />
+      <SubscriptionField className="my-6" />
+
       {briefing.content.split('\n\n').map((paragraph, index) => {
         var color = Color(colorMap[index % colorMap.length]);
 
@@ -47,7 +48,7 @@ export default async function Home() {
         return (
           <div className="max-w-2xl mx-auto">
             <div
-              className="py-5 px-8 mx-8 border-b-black border-b"
+              className="py-5 px-8 border-b-black border-b"
               style={{ backgroundColor: color.string() }}
             >
               <p className="">{paragraph}</p>
