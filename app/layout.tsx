@@ -7,29 +7,43 @@ export const metadata: Metadata = {
   description: '',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const date = new Date(Date.now());
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
+  const formatedDate = date.toLocaleDateString('fr-FR', options);
+
   return (
-    <html lang="en">
+    <html lang="fr">
       <body className="bg-[#FFFAF3] text-[#292928]">
-        <div className="mx-auto my-10 max-w-2xl">
-          <div className="flex items-center gap-4">
+        <div className="my-10 max-w-2xl mx-auto">
+          <div className="flex items-center justify-center gap-4">
             <Image
-              className="w-16 h-16"
+              className="w-10 h-10 md:w-16 md:h-16 mb-6" /* mb-6 to correct vertical center due to date */
               src="/logo.png"
               width="800"
               height="800"
               alt=""
             />
-            <h1 className="text-7xl text-center font-playfair-display">
-              Sunrise Briefing
-            </h1>
+            <div>
+              <h1 className="text-3xl md:text-7xl text-center font-playfair-display">
+                Sunrise Briefing
+              </h1>
+              <p className="font-playfair-display text-center">
+                {formatedDate}
+              </p>
+            </div>
           </div>
-          <div className="py-2">{children}</div>
         </div>
+        {children}
       </body>
     </html>
   );
