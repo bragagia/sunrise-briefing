@@ -42,9 +42,10 @@ export const sendEmails = async ({
 
   try {
     const response = await fetch(`${BASE_URL}/email`, {
+      method: 'POST',
       headers: {
         accept: 'application/json',
-        'api-key': '',
+        'api-key': process.env.BREVO_API_KEY || '',
         'content-type': 'application/json',
       },
       body: JSON.stringify(data),
