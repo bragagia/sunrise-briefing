@@ -1,4 +1,14 @@
-export async function POST(request: Request) {}
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
+
+export async function POST(request: Request) {
+  const supabase = createRouteHandlerClient({ cookies });
+
+  // News fetcher
+  // Rank news
+  // Generate briefing
+  // Send mails
+}
 
 /*
 NEWS FETCHER JOB
