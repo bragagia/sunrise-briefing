@@ -1,13 +1,16 @@
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import Color from 'color';
 import { cookies } from 'next/headers';
-import { Database } from '../types/supabase';
 import SubscriptionField from '../components/subscription/SubscriptionField';
+import { Database } from '../types/supabase';
 
 export default async function Home() {
-  const supabase = createServerComponentClient<Database>({ cookies });
+  const rootSupabase = createServerComponentClient<Database>(
+    { cookies },
+    { supabaseKey: process.env.SUPABASE_SERVICE_KEY }
+  );
 
-  const { data: briefing, error } = await supabase
+  const { data: briefing, error } = await rootSupabase
     .from('briefings')
     .select()
     .limit(1)

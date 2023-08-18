@@ -3,9 +3,13 @@ import { cookies } from 'next/headers';
 import { Database } from '../../../types/supabase';
 
 export async function POST(request: Request) {
-  const supabase = createRouteHandlerClient<Database>({ cookies });
+  const rootSupabase = createRouteHandlerClient<Database>(
+    { cookies },
+    { supabaseKey: process.env.SUPABASE_SERVICE_KEY }
+  );
 
   // News fetcher
+  const newsApiUrl = 'https://newsdata.io/api/1/news';
   // Rank news
   // Generate briefing
   // Send mails
