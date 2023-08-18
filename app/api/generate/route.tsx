@@ -1,9 +1,8 @@
-import { render } from '@react-email/render';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
-import error from 'next/error';
+import { render } from '@react-email/render';
 import { sendEmails } from '../../../lib/mailer';
 import { getBriefingTemplateMail } from '../../../lib/templating';
 import { Database } from '../../../types/supabase';
@@ -64,9 +63,6 @@ export async function POST(/*request: Request*/) {
     .select()
     .limit(1)
     .single();
-  if (error) {
-    throw error;
-  }
 
   if (!briefing) {
     return NextResponse.json(

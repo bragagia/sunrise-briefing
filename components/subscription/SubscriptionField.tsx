@@ -51,7 +51,7 @@ export default function SubscriptionField({
     }
 
     setSubscriptionDisabled(false);
-  }, [mail]);
+  }, [mail, supabase]);
 
   if (justSubscribed) {
     return (
