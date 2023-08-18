@@ -11,7 +11,42 @@ export async function POST(request: Request) {
   );
 
   // News fetcher
-  const newsApiUrl = 'https://newsdata.io/api/1/news';
+  if (process.env.NEWS_API_KEY == undefined) {
+    throw new Error('Missing news api key');
+  }
+  const newsApiKey = process.env.NEWS_API_KEY;
+
+  const newsDomains = ['theguardian', 'bbc', 'expresscouk', 'huffpost'];
+
+  function newsApiUrl(pageId: bigint | null) {
+    const apiUrl = new URL('https://newsdata.io/api/1/news');
+    apiUrl.searchParams.append('apiKey', newsApiKey);
+    apiUrl.searchParams.append('page', '3');
+    apiUrl.searchParams.append('domain', newsDomains.join(','));
+
+    return apiUrl;
+  }
+
+  let page_id = null;
+
+  do {
+    const page = await fetch(newsApiUrl(page_id));
+    const pageJson = await page.json();
+
+    pageJson['results'].map((news: any) => {
+      rootSupabase.from('news').insert({ published_at: news['pubDate'] });
+    });
+
+    /*page = fetch_page(page_id)
+
+    page['results'].each do |news|
+      News.create!(raw_data: news, published_at: news['pubDate'])
+    end
+
+    page_id = page['nextPage']
+    break if page_id.nil?*/
+  } while (page_id != null);
+
   // Rank news
   // Generate briefing
   // Send mails
