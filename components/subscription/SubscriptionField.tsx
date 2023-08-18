@@ -3,7 +3,6 @@
 import { useCallback, useState } from "react";
 import debounce  from "lodash.debounce"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { toast } from 'react-toastify';
 
 import { Database } from "../../types/supabase";
 
@@ -16,7 +15,11 @@ const verifyEmail = (email: string) => {
 
 const debouncedVerifyEmail = debounce(verifyEmail, 10);
 
-export default function SubscriptionField() {
+export default function SubscriptionField({
+  className,
+}: {
+  className: string;
+}) {
   const supabase = createClientComponentClient<Database>();
   const [mail, setMail] = useState<string>('')
   const [justSubscribed, setJustSubscribed] = useState(false)
@@ -57,7 +60,7 @@ export default function SubscriptionField() {
   }
 
   return (
-    <form className="w-full max-w" noValidate>
+    <form className={'w-full max-w ' + className} noValidate>
       <div className="flex items-center border-b  text-gray-900 py-2">
         <input className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="email" placeholder="i-want-sunrise-briefing@mail.com" aria-label="Email" value={mail} onChange={onChange} />
         <button
