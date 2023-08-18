@@ -29,37 +29,49 @@ export interface Database {
       }
       news: {
         Row: {
+          content: string
           created_at: string
           digest: string | null
           id: number
+          link: string
           magnitude: number | null
           novelty: number | null
           potential: number | null
           published_at: string
           reliability: number | null
           scale: number | null
+          source: string
+          title: string
         }
         Insert: {
+          content: string
           created_at?: string
           digest?: string | null
           id?: number
+          link: string
           magnitude?: number | null
           novelty?: number | null
           potential?: number | null
           published_at: string
           reliability?: number | null
           scale?: number | null
+          source: string
+          title: string
         }
         Update: {
+          content?: string
           created_at?: string
           digest?: string | null
           id?: number
+          link?: string
           magnitude?: number | null
           novelty?: number | null
           potential?: number | null
           published_at?: string
           reliability?: number | null
           scale?: number | null
+          source?: string
+          title?: string
         }
         Relationships: []
       }

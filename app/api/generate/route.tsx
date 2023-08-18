@@ -27,25 +27,28 @@ export async function POST(request: Request) {
     return apiUrl;
   }
 
-  let page_id = null;
+  let pageId = null;
 
   do {
-    const page = await fetch(newsApiUrl(page_id));
+    const page = await fetch(newsApiUrl(pageId));
     const pageJson = await page.json();
 
-    pageJson['results'].map((news: any) => {
-      rootSupabase.from('news').insert({ published_at: news['pubDate'] });
+    pageJson['results'].map(async (news: any) => {
+      const { error } = await rootSupabase.from('news').insert({
+        published_at: news['pubDate'],
+        content: news['content'],
+        title: news['title'],
+        link: news['link'],
+        source: news['source_id'],
+      });
+
+      if (error) {
+        // TODO: Log error
+      }
     });
 
-    /*page = fetch_page(page_id)
-
-    page['results'].each do |news|
-      News.create!(raw_data: news, published_at: news['pubDate'])
-    end
-
-    page_id = page['nextPage']
-    break if page_id.nil?*/
-  } while (page_id != null);
+    pageId = pageJson['nextPage'];
+  } while (pageId != null);
 
   // Rank news
   // Generate briefing
