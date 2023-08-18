@@ -43,7 +43,7 @@ export default async function Home() {
       {briefing.content.split('\n\n').map((paragraph, index) => {
         var color = Color(colorMap[index % colorMap.length]);
 
-        color = color.fade(0.75);
+        color = color.fade(0.8);
 
         return (
           <div className="max-w-2xl mx-auto">
