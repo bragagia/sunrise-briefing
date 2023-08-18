@@ -7,13 +7,22 @@ export const metadata: Metadata = {
   description: '',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const date = new Date(Date.now());
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
+  const formatedDate = date.toLocaleDateString('fr-FR', options);
+
   return (
-    <html lang="en">
+    <html lang="fr">
       <body className="bg-[#FFFAF3] text-[#292928]">
         <div className="my-10 max-w-2xl mx-auto">
           <div className="flex items-center justify-center gap-4">
@@ -29,7 +38,7 @@ export default function RootLayout({
                 Sunrise Briefing
               </h1>
               <p className="font-playfair-display text-center">
-                Friday, August 18, 2023
+                {formatedDate}
               </p>
             </div>
           </div>
