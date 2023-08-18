@@ -1,8 +1,11 @@
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
+import { render } from "@react-email/render";
 import { NextResponse } from 'next/server';
-import { sendEmails } from '../../../lib/mailer';
+
 import { Database } from '../../../types/supabase';
+import { sendEmails } from '../../../lib/mailer';
+import Briefing from '../../../emails/Briefing';
 
 export async function POST(request: Request) {
   const rootSupabase = createRouteHandlerClient<Database>(
@@ -53,11 +56,20 @@ export async function POST(request: Request) {
   // Rank news
   // Generate briefing
   // Send mails
+
+  const { data: briefing, error } = await rootSupabase
+    .from('briefings')
+    .select()
+    .limit(1)
+    .single();
+
+  const content = Briefing({ firstName: 'Mathias', briefing: briefing?.content.split('\n\n') || [], date: 'vendredi 18 août 2023' })
+
   await sendEmails({
     subject: 'Hello Mathias, your sunrise briefing is ready!',
-    content: '<h1>Bonjour</h1',
-    to: [{ name: 'Mathias Bragagia', email: 'mathias.bragagia.pro@gmail.com' }],
-  });
+    content: render(content),
+    to: [{ name: 'Mathias Bragagia', email: 'mathias.bragagia.pro@gmail.com'}]
+  })
 
   return NextResponse.json({ ok: true });
 }

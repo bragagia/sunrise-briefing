@@ -22,7 +22,7 @@ export type SendEmailResponse =
     };
 
 const SENDER_NAME = 'Sunrise Briefing';
-const SENDER_EMAIL = 'sunrise-briefing@gmail.com';
+const SENDER_EMAIL = 'sunrise-briefing@bragagia.com';
 const BASE_URL = 'https://api.brevo.com/v3/smtp';
 
 export const sendEmails = async ({
