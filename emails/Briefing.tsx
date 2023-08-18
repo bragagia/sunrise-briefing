@@ -12,19 +12,19 @@ import {
 import * as React from 'react';
 
 interface BriefingProps {
-  firstName: string;
-  date: string
+  formattedDate: string
+  shortDate: string
   briefing: string[]
 }
 
-export const Briefing = ({ firstName, date, briefing }: BriefingProps) => (
+export const Briefing = ({ formattedDate, shortDate, briefing }: BriefingProps) => (
   <Html>
     <Head />
-    <Preview>Hello {firstName}, your briefing is ready !</Preview>
+    <Preview>{shortDate}: Votre dose de news journalière est prête !</Preview>
     <Body style={main}>
       <Container style={container}>
         <Heading style={title}>Sunrise Briefing</Heading>
-        <Heading style={subtitle}>{date}</Heading>
+        <Heading style={subtitle}>{formattedDate}</Heading>
 
         {
           briefing.map((paragraph, index) => (

@@ -30,12 +30,16 @@ export const sendEmails = async ({
   to,
   content,
 }: SendEmailsParams): Promise<SendEmailResponse> => {
+  if (!to.length) {
+    return { success: false, error: { code: 500, message: 'No mail to send'}}
+  }
+
   const data = {
     sender: {
       name: SENDER_NAME,
       email: SENDER_EMAIL,
     },
-    to,
+    bcc: to,
     subject,
     htmlContent: content,
   };

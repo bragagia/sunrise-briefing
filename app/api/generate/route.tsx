@@ -5,7 +5,8 @@ import { NextResponse } from 'next/server';
 
 import { Database } from '../../../types/supabase';
 import { sendEmails } from '../../../lib/mailer';
-import Briefing from '../../../emails/Briefing';
+import { getBriefingTemplateMail } from '../../../lib/templating';
+import { NextApiResponse } from 'next';
 
 export async function POST(request: Request) {
   const rootSupabase = createRouteHandlerClient<Database>(
@@ -14,64 +15,77 @@ export async function POST(request: Request) {
   );
 
   // News fetcher
-  if (process.env.NEWS_API_KEY == undefined) {
-    throw new Error('Missing news api key');
-  }
-  const newsApiKey = process.env.NEWS_API_KEY;
+  // if (process.env.NEWS_API_KEY == undefined) {
+  //   throw new Error('Missing news api key');
+  // }
+  // const newsApiKey = process.env.NEWS_API_KEY;
 
-  const newsDomains = ['theguardian', 'bbc', 'expresscouk', 'huffpost'];
+  // const newsDomains = ['theguardian', 'bbc', 'expresscouk', 'huffpost'];
 
-  function newsApiUrl(pageId: bigint | null) {
-    const apiUrl = new URL('https://newsdata.io/api/1/news');
-    apiUrl.searchParams.append('apiKey', newsApiKey);
-    apiUrl.searchParams.append('page', '3');
-    apiUrl.searchParams.append('domain', newsDomains.join(','));
+  // function newsApiUrl(pageId: bigint | null) {
+  //   const apiUrl = new URL('https://newsdata.io/api/1/news');
+  //   apiUrl.searchParams.append('apiKey', newsApiKey);
+  //   apiUrl.searchParams.append('page', '3');
+  //   apiUrl.searchParams.append('domain', newsDomains.join(','));
 
-    return apiUrl;
-  }
+  //   return apiUrl;
+  // }
 
-  let pageId = null;
+  // let pageId = null;
 
-  do {
-    const page = await fetch(newsApiUrl(pageId));
-    const pageJson = await page.json();
+  // do {
+  //   const page = await fetch(newsApiUrl(pageId));
+  //   const pageJson = await page.json();
 
-    pageJson['results'].map(async (news: any) => {
-      const { error } = await rootSupabase.from('news').insert({
-        published_at: news['pubDate'],
-        content: news['content'],
-        title: news['title'],
-        link: news['link'],
-        source: news['source_id'],
-      });
+  //   pageJson['results'].map(async (news: any) => {
+  //     const { error } = await rootSupabase.from('news').insert({
+  //       published_at: news['pubDate'],
+  //       content: news['content'],
+  //       title: news['title'],
+  //       link: news['link'],
+  //       source: news['source_id'],
+  //     });
 
-      if (error) {
-        // TODO: Log error
-      }
-    });
+  //     if (error) {
+  //       // TODO: Log error
+  //     }
+  //   });
 
-    pageId = pageJson['nextPage'];
-  } while (pageId != null);
+  //   pageId = pageJson['nextPage'];
+  // } while (pageId != null);
 
   // Rank news
   // Generate briefing
   // Send mails
 
-  const { data: briefing, error } = await rootSupabase
+  // TODO: to remove when generation work
+  const { data: briefing } = await rootSupabase
     .from('briefings')
     .select()
     .limit(1)
     .single();
 
-  const content = Briefing({ firstName: 'Mathias', briefing: briefing?.content.split('\n\n') || [], date: 'vendredi 18 août 2023' })
+  if (!briefing) {
+    return NextResponse.json({ type: 'BriefingNotGenerated', message: 'The briefing of the day could not be generated' }, { status: 500 });
+  }
 
-  await sendEmails({
-    subject: 'Hello Mathias, your sunrise briefing is ready!',
+  const { data: subscriptions } = await rootSupabase
+    .from('subscriptions')
+    .select()
+
+  const { content, subject} = getBriefingTemplateMail({ briefing })
+
+  const mailResult = await sendEmails({
+    subject,
     content: render(content),
-    to: [{ name: 'Mathias Bragagia', email: 'mathias.bragagia.pro@gmail.com'}]
+    to: subscriptions?.map(({ email }) => ({ email })) || []
   })
 
-  return NextResponse.json({ ok: true });
+  if (!mailResult.success) {
+    console.warn({ type: 'SubscriptionMailError', message: mailResult.error.message })
+  }
+
+  return NextResponse.json({ message: 'Briefing successfully generated' }, { status: 200 });
 }
 
 /*
