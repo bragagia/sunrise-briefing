@@ -1,8 +1,8 @@
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
-import { Database } from '../../../types/supabase';
-import { sendEmails } from '../../../lib/mailer';
 import { NextResponse } from 'next/server';
+import { sendEmails } from '../../../lib/mailer';
+import { Database } from '../../../types/supabase';
 
 export async function POST(request: Request) {
   const rootSupabase = createRouteHandlerClient<Database>(
@@ -56,10 +56,10 @@ export async function POST(request: Request) {
   await sendEmails({
     subject: 'Hello Mathias, your sunrise briefing is ready!',
     content: '<h1>Bonjour</h1',
-    to: [{ name: 'Mathias Bragagia', email: 'mathias.bragagia.pro@gmail.com'}]
-  })
+    to: [{ name: 'Mathias Bragagia', email: 'mathias.bragagia.pro@gmail.com' }],
+  });
 
-  return NextResponse.json({ ok: true })
+  return NextResponse.json({ ok: true });
 }
 
 /*
