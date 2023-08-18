@@ -4,6 +4,8 @@ import { cookies } from 'next/headers';
 import SubscriptionField from '../components/subscription/SubscriptionField';
 import { Database } from '../types/supabase';
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   const rootSupabase = createServerComponentClient<Database>(
     { cookies },
@@ -46,7 +48,7 @@ export default async function Home() {
         color = color.fade(0.8);
 
         return (
-          <div className="max-w-2xl mx-auto">
+          <div key={index} className="max-w-2xl mx-auto">
             <div
               className="py-5 px-8 border-b-black border-b"
               style={{ backgroundColor: color.string() }}

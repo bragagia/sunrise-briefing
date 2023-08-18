@@ -1,58 +1,58 @@
+import { render } from '@react-email/render';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
-import { render } from "@react-email/render";
 import { NextResponse } from 'next/server';
 
-import { Database } from '../../../types/supabase';
+import error from 'next/error';
 import { sendEmails } from '../../../lib/mailer';
 import { getBriefingTemplateMail } from '../../../lib/templating';
-import { NextApiResponse } from 'next';
+import { Database } from '../../../types/supabase';
 
-export async function POST(request: Request) {
+export async function POST(/*request: Request*/) {
   const rootSupabase = createRouteHandlerClient<Database>(
     { cookies },
     { supabaseKey: process.env.SUPABASE_SERVICE_KEY }
   );
 
-  // News fetcher
-  // if (process.env.NEWS_API_KEY == undefined) {
-  //   throw new Error('Missing news api key');
-  // }
-  // const newsApiKey = process.env.NEWS_API_KEY;
+  //News fetcher
+  if (process.env.NEWS_API_KEY == undefined) {
+    throw new Error('Missing news api key');
+  }
+  const newsApiKey = process.env.NEWS_API_KEY;
 
-  // const newsDomains = ['theguardian', 'bbc', 'expresscouk', 'huffpost'];
+  const newsDomains = ['theguardian', 'bbc', 'expresscouk', 'huffpost'];
 
-  // function newsApiUrl(pageId: bigint | null) {
-  //   const apiUrl = new URL('https://newsdata.io/api/1/news');
-  //   apiUrl.searchParams.append('apiKey', newsApiKey);
-  //   apiUrl.searchParams.append('page', '3');
-  //   apiUrl.searchParams.append('domain', newsDomains.join(','));
+  function newsApiUrl(pageId: string) {
+    const apiUrl = new URL('https://newsdata.io/api/1/news');
+    apiUrl.searchParams.append('apiKey', newsApiKey);
+    apiUrl.searchParams.append('page', pageId);
+    apiUrl.searchParams.append('domain', newsDomains.join(','));
 
-  //   return apiUrl;
-  // }
+    return apiUrl;
+  }
 
-  // let pageId = null;
+  let pageId = null;
 
-  // do {
-  //   const page = await fetch(newsApiUrl(pageId));
-  //   const pageJson = await page.json();
+  do {
+    const page = await fetch(newsApiUrl(pageId));
+    const pageJson = await page.json();
 
-  //   pageJson['results'].map(async (news: any) => {
-  //     const { error } = await rootSupabase.from('news').insert({
-  //       published_at: news['pubDate'],
-  //       content: news['content'],
-  //       title: news['title'],
-  //       link: news['link'],
-  //       source: news['source_id'],
-  //     });
+    pageJson['results'].map(async (news: any) => {
+      const { error } = await rootSupabase.from('news').insert({
+        published_at: news['pubDate'],
+        content: news['content'],
+        title: news['title'],
+        link: news['link'],
+        source: news['source_id'],
+      });
 
-  //     if (error) {
-  //       // TODO: Log error
-  //     }
-  //   });
+      if (error) {
+        throw error;
+      }
+    });
 
-  //   pageId = pageJson['nextPage'];
-  // } while (pageId != null);
+    pageId = pageJson['nextPage'];
+  } while (pageId != null);
 
   // Rank news
   // Generate briefing
@@ -64,28 +64,43 @@ export async function POST(request: Request) {
     .select()
     .limit(1)
     .single();
+  if (error) {
+    throw error;
+  }
 
   if (!briefing) {
-    return NextResponse.json({ type: 'BriefingNotGenerated', message: 'The briefing of the day could not be generated' }, { status: 500 });
+    return NextResponse.json(
+      {
+        type: 'BriefingNotGenerated',
+        message: 'The briefing of the day could not be generated',
+      },
+      { status: 500 }
+    );
   }
 
   const { data: subscriptions } = await rootSupabase
     .from('subscriptions')
-    .select()
+    .select();
 
-  const { content, subject} = getBriefingTemplateMail({ briefing })
+  const { content, subject } = getBriefingTemplateMail({ briefing });
 
   const mailResult = await sendEmails({
     subject,
     content: render(content),
-    to: subscriptions?.map(({ email }) => ({ email })) || []
-  })
+    to: subscriptions?.map(({ email }) => ({ email })) || [],
+  });
 
   if (!mailResult.success) {
-    console.warn({ type: 'SubscriptionMailError', message: mailResult.error.message })
+    console.warn({
+      type: 'SubscriptionMailError',
+      message: mailResult.error.message,
+    });
   }
 
-  return NextResponse.json({ message: 'Briefing successfully generated' }, { status: 200 });
+  return NextResponse.json(
+    { message: 'Briefing successfully generated' },
+    { status: 200 }
+  );
 }
 
 /*

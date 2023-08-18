@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@types/lodash.debounce": "^4.0.7",
+    "encoding": "^0.1.13",
     "prettier": "3.0.2",
     "supabase": "^1.86.2"
   }
