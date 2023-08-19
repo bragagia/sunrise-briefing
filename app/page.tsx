@@ -32,7 +32,7 @@ export default async function Home() {
       <SubscriptionField className="my-6" />
 
       {briefing.content.split('\n\n').map((paragraph, index) => {
-        const color = getParagraphBgColorFromPosition(index)
+        const color = getParagraphBgColorFromPosition(index);
 
         return (
           <div key={index} className="max-w-2xl mx-auto">

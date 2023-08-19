@@ -1,14 +1,12 @@
-import { Font, Head } from "@react-email/components";
+import { Font, Head } from '@react-email/components';
 
-const FONT_BASE_URL = process.env.FRONT_END_URL
+const FONT_BASE_URL = process.env.FRONT_END_URL;
 
 interface SharedHeadersProps {
-  locale?: string,
+  locale?: string;
 }
 
-export const SharedHeaders = ({
-  locale = 'fr'
-}: SharedHeadersProps) => {
+export const SharedHeaders = ({ locale = 'fr' }: SharedHeadersProps) => {
   return (
     <Head lang={locale}>
       <Font
@@ -32,5 +30,5 @@ export const SharedHeaders = ({
         fontStyle="normal"
       />
     </Head>
-  )
-}
+  );
+};

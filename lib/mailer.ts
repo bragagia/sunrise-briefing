@@ -31,7 +31,7 @@ export const sendEmails = async ({
   content,
 }: SendEmailsParams): Promise<SendEmailResponse> => {
   if (!to.length) {
-    return { success: false, error: { code: 500, message: 'No mail to send'}}
+    return { success: false, error: { code: 500, message: 'No mail to send' } };
   }
 
   const data = {

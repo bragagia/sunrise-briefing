@@ -36,7 +36,7 @@ export const getBriefingTemplateMail = ({
   const date = new Date(Date.now());
   const locale = 'fr-FR';
 
-  const shortDate = getShortFormattedDate(date, locale)
+  const shortDate = getShortFormattedDate(date, locale);
 
   return {
     content: Briefing({
@@ -44,6 +44,6 @@ export const getBriefingTemplateMail = ({
       formattedDate: getFormattedDate(date, locale),
       shortDate,
     }),
-    subject: getBriefingMailSubject(shortDate)
-  }
+    subject: getBriefingMailSubject(shortDate),
+  };
 };

@@ -40,19 +40,24 @@ export default function SubscriptionField({
     const token = captchaRef?.current?.getValue();
 
     if (token) {
-        const res = await fetch(`${window.location.host}/api/verify-captcha-token`, {
+      const res = await fetch(
+        `${window.location.host}/api/verify-captcha-token`,
+        {
           method: 'POST',
           body: JSON.stringify({
-            token
-          })
-        })
-
-        const data = await res.json()
-
-        if (!data.isValidToken){
-          setError("Nous n'avons pas réussi à confirmer que vous n'êtes pas un robot.");
-          return
+            token,
+          }),
         }
+      );
+
+      const data = await res.json();
+
+      if (!data.isValidToken) {
+        setError(
+          "Nous n'avons pas réussi à confirmer que vous n'êtes pas un robot."
+        );
+        return;
+      }
     } else {
       setError("Veuillez d'abord prouver que vous n'êtes pas un robot.");
       return;
@@ -110,7 +115,10 @@ export default function SubscriptionField({
           Subscribe
         </button>
       </div>
-      <ReCAPTCHA sitekey={process.env.NEXT_PUBLIC_CAPTCHA_SITE_KEY || ''} ref={captchaRef}  />
+      <ReCAPTCHA
+        sitekey={process.env.NEXT_PUBLIC_CAPTCHA_SITE_KEY || ''}
+        ref={captchaRef}
+      />
       {error ? <p className="text-red-700 text-sm">{error}</p> : null}
     </form>
   );
