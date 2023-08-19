@@ -1,4 +1,4 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { SupabaseClient, createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
@@ -6,6 +6,30 @@ import { render } from '@react-email/render';
 import { sendEmails } from '../../../lib/mailer';
 import { getBriefingTemplateMail } from '../../../lib/templating';
 import { Database } from '../../../types/supabase';
+
+
+type News = Database['public']['Tables']['news']['Row']
+
+const fetchNewsOfTheDay = (rootSupabase: SupabaseClient) => {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  yesterday.setHours(0, 0, 0, 0);
+
+  return rootSupabase
+    .from('news')
+    .select()
+    .gte('published_at', yesterday)
+}
+
+const getNewsScore = ({ magnitude, potential, novelty, reliability, scale }: News) => (
+  ((scale || 0) * 0.9 + (magnitude || 0) * 0.9 + (potential || 0) * 0.9 + (novelty || 0) * 0.9 + (reliability || 0) * 1.4) / 5
+)
+
+const getTop5NewsOfTheDay = (allNews: News[]) => {
+  const sortedNews = allNews.sort((a, b) => getNewsScore(b) - getNewsScore(a))
+
+  return sortedNews.slice(0, 5)
+}
 
 export async function POST(/*request: Request*/) {
   const rootSupabase = createRouteHandlerClient<Database>(
