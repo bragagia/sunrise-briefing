@@ -245,7 +245,7 @@ async function generateBriefing() {
 
   const DIGEST_PROMPT = `Here is a news article. Please note it has been automatically retrieved so there may be unwanted artifacts like mentions "Please click here to accept cookies" or "Like & Share facebook.com". You must ignore all those artifacts.
 
-I want you to summarize the article. Your summary should explain the news in simple terms, and why it\'s important. You should define any term or name that are not well known. Write a single paragraph with no new lines.`;
+I want you to summarize the article. Your summary should explain the news in simple terms, and why it's important. You should define any term or name that are not well known. Write a single paragraph with no new lines.`;
 
   const WRITE_BRIEFING_PROMPT =
     "I gave you 5 news summary. I want you to write a daily briefing using those news. You can rewrite them as you want, but keep it as clear as possible and efficient, while keeping as much information from the source as you can. Emphasize for each news why it's important. Start the briefing with a greating and end with a closing. You can order the news by the level of importance you think they have.";
