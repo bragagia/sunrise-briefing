@@ -1,6 +1,6 @@
 import { Font, Head } from "@react-email/components";
 
-const FONT_BASE_URL = `${process.env.FRONT_END_URL}/assets`
+const FONT_BASE_URL = process.env.FRONT_END_URL
 
 interface SharedHeadersProps {
   locale?: string,
