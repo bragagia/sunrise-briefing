@@ -1,7 +1,8 @@
 'use client';
 
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 import { Database } from '../../types/supabase';
 
@@ -21,6 +22,7 @@ export default function SubscriptionField({
   const [error, setError] = useState<string>('');
   const [justSubscribed, setJustSubscribed] = useState(false);
   const [subscriptionDisabled, setSubscriptionDisabled] = useState(true);
+  const captchaRef = useRef<ReCAPTCHA>(null);
 
   const onChange = (e: any) => {
     const value = e.target.value;
@@ -34,6 +36,27 @@ export default function SubscriptionField({
   const onSubscribe = useCallback(async () => {
     setSubscriptionDisabled(true);
     setError('');
+
+    const token = captchaRef?.current?.getValue();
+
+    if (token) {
+        const res = await fetch(`${window.location.host}/api/verify-captcha-token`, {
+          method: 'POST',
+          body: JSON.stringify({
+            token
+          })
+        })
+
+        const data = await res.json()
+
+        if (!data.isValidToken){
+          setError("Nous n'avons pas réussi à confirmer que vous n'êtes pas un robot.");
+          return
+        }
+    } else {
+      setError("Veuillez d'abord prouver que vous n'êtes pas un robot.");
+      return;
+    }
 
     const { error } = await supabase.from('subscriptions').insert({
       email: mail,
@@ -87,6 +110,7 @@ export default function SubscriptionField({
           Subscribe
         </button>
       </div>
+      <ReCAPTCHA sitekey={process.env.NEXT_PUBLIC_CAPTCHA_SITE_KEY || ''} ref={captchaRef}  />
       {error ? <p className="text-red-700 text-sm">{error}</p> : null}
     </form>
   );
