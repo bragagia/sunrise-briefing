@@ -36,7 +36,7 @@ export const Briefing = ({
       <SharedHeaders locale={locale} />
       <Preview>{shortDate}: Votre dose de news journalière est prête !</Preview>
       <Body className=" bg-[#FFFAF3] text-[#292928]">
-        <Container className="mt-10 max-w-fit mx-auto">
+        <Container className="mt-10 max-w-fit mx-auto  bg-[#FFFAF3]">
           <Section className="flex items-center justify-center mb-2 mx-auto">
             <Column>
               <Img
