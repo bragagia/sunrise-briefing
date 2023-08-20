@@ -87,7 +87,7 @@ export default function SubscriptionField({
     }
 
     setSubscriptionDisabled(false);
-  }, [mail, supabase]);
+  }, [mail, supabase, isDevEnv]);
 
   if (justSubscribed) {
     return (

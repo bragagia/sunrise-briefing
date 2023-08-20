@@ -32,7 +32,7 @@ export default async function Home() {
   var paragraphs = briefing.content.split('\n\n');
 
   return (
-    <div className="text-justify text-gray-900 whitespace-pre-line font-hanken-grotesk mb-32">
+    <div className="text-justify text-gray-900 whitespace-pre-line font-hanken-grotesk">
       <SubscriptionField className="my-6" />
 
       {paragraphs.map((paragraph, index) => {

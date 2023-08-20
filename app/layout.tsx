@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 
+import Link from 'next/link';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -47,7 +48,37 @@ export default async function RootLayout({
               </div>
             </div>
 
+            <p className="text-sm text-gray-800 text-justify mb-4">
+              <b>Chaque matin à 8h00</b>, recevez dans votre boîte mail
+              <b> l'essentiel de l'actualité parisienne</b>.
+            </p>
+            <p className="text-sm text-gray-800 text-justify">
+              Fini la lecture sans fin des journaux et réseaux sociaux, on fait
+              le tri et on résume tout pour vous !
+            </p>
+
             {children}
+
+            <div className="my-16 text-center">
+              <span className="font-bold">Fait avec ❤️ par :</span>
+              <ul className="pl-5">
+                <li>
+                  <Link
+                    className="text-blue-800"
+                    href="https://mathias.bragagia.com"
+                  >
+                    Mathias Bragagia
+                  </Link>
+                  ,
+                </li>
+                <li>
+                  <Link className="text-blue-800" href="https://tmo.one/">
+                    Thibault Miranda de Oliveira,
+                  </Link>
+                </li>
+                <li>Florent Bertrand</li>
+              </ul>
+            </div>
           </div>
         </div>
       </body>
