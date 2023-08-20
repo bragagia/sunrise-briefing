@@ -5,7 +5,7 @@ import { Database } from '../../../types/supabase';
 import { getNewsOfTheDay } from './helpers';
 
 // @ts-ignore (for vscode only)
-import RANKER_PROMPT from './prompt_rank_news.txt';
+import RANKER_PROMPT from './2_prompt_rank_news.txt';
 
 const openai = new OpenAI();
 

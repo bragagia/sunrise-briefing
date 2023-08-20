@@ -5,7 +5,7 @@ import { Database } from '../../../types/supabase';
 import { getNewsOfTheDay, getTop5NewsOfTheDay } from './helpers';
 
 // @ts-ignore (for vscode only)
-import DIGEST_PROMPT from './prompt_digest.txt';
+import DIGEST_PROMPT from './3_prompt_digest.txt';
 
 const openai = new OpenAI();
 
