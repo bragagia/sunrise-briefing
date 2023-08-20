@@ -23,16 +23,19 @@ export default async function Home() {
   if (error != null || briefing == null) {
     return (
       <p className="mb-16 font-hanken-grotesk text-center">
-        This is a day without sunrise. Something broke on our side, sorry :'(
+        C'est une journée sans lever de soleil. Un truc a cassé de notre côté,
+        désolé :'(
       </p>
     );
   }
+
+  var paragraphs = briefing.content.split('\n\n');
 
   return (
     <div className="text-justify text-gray-900 whitespace-pre-line font-hanken-grotesk mb-32">
       <SubscriptionField className="my-6" />
 
-      {briefing.content.split('\n\n').map((paragraph, index) => {
+      {paragraphs.map((paragraph, index) => {
         const color = getParagraphBgColorFromPosition(index);
         var title = '';
 
@@ -42,10 +45,14 @@ export default async function Home() {
           paragraph = split[1];
         }
 
+        var isLast = index + 1 == paragraphs.length;
+
         return (
           <div key={index} className="max-w-2xl mx-auto">
             <div
-              className="py-5 px-8 border-b-black border-b"
+              className={
+                'py-5 px-8 ' + (!isLast ? 'border-b-black border-b' : '')
+              }
               style={{ backgroundColor: color.string() }}
             >
               {title != '' ? <h3 className="font-bold">{title}</h3> : ''}

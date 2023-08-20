@@ -37,6 +37,12 @@ export default function SubscriptionField({
     setSubscriptionDisabled(true);
     setError('');
 
+    if (!captchaRef.current) {
+      setError('Internal error: Missing captcha ref');
+      return;
+    }
+    captchaRef.current.execute();
+
     const token = captchaRef?.current?.getValue();
 
     if (token) {
@@ -117,6 +123,7 @@ export default function SubscriptionField({
       </div>
       <ReCAPTCHA
         sitekey={process.env.NEXT_PUBLIC_CAPTCHA_SITE_KEY || ''}
+        size="invisible"
         ref={captchaRef}
       />
       {error ? <p className="text-red-700 text-sm">{error}</p> : null}
