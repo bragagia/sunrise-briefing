@@ -1,0 +1,7 @@
+Here is a news article. Please note it has been automatically retrieved so there may be
+unwanted artifacts like mentions "Please click here to accept cookies" or "Like & Share facebook.com".
+You must ignore all those artifacts.
+
+I want you to summarize the article. Your summary should explain the news in simple terms, and why
+it's important. You should define any term or name that are not well known.
+Write a single paragraph with no new lines.

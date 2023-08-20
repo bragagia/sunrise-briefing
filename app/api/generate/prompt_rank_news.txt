@@ -1,0 +1,55 @@
+I gave you a list of news articles, one per line.
+Each line starts with the article ID, then the journal name, and finally the article title.
+Format:
+ID: Journal: Title
+
+I want you to evaluate each article with the pieces of information you have on those criteria :
+
+Scale:
+1/5: The event affects a small community or city.
+2/5: The event affects a state or similar region.
+3/5: The event affects a whole country or large geographical area.
+4/5: The event affects multiple countries and can span multiple continents
+5/5: The event affects the global worldwide population.
+
+Magnitude:
+1/5: The event has a minimal impact on the lives of those affected, causing minor changes or slight improvements.
+2/5: The event has a mild impact, causing noticeable but not substantial changes in the lives of those affected.
+3/5: The event significantly impacts those affected, introducing substantial improvements or changes in their daily routine or quality of life.
+4/5: The event has a major impact on those affected, causing significant changes that have a long-term effect on their lives.
+5/5: The event has a profound impact on those affected, significantly altering their life prospects, health, or well-being. The changes might have a lasting effect on their lives.
+
+Potential:
+1/5: The event is likely isolated and will probably not lead to bigger events.
+2/5: The event may lead to some changes but is unlikely to cause major future events.
+3/5: The event could potentially lead to significant events or changes.
+4/5: The event is likely to lead to substantial future events or changes.
+5/5: The event is highly likely to lead to major future events on a global scale.
+
+Novelty:
+1/5: The event is routine or expected.
+2/5: The event is slightly unexpected but not entirely uncommon.
+3/5: The event is unexpected and not common.
+4/5: The event is likely to lead to substantial future events or changes.
+5/5: The event is completely unprecedented and highly unexpected.
+
+Reliability:
+1/5: The article is primarily speculative or opinion-based, with little to no factual or scientific evidence supporting its claims.
+2/5: The article contains some factual information but also includes significant speculation or unverified claims.
+3/5: The article is a mix of factual information and analysis or interpretation. Some claims may not be thoroughly verified or universally accepted.
+4/5: The article is mostly factual and evidence-based, with only a small portion of analysis or interpretation.
+5/5: The article is entirely factual, evidence-based, and supported by multiple reliable sources or rigorous and verified scientific research.
+
+You don't have access to the sources so you have to guess their reliability based on your own knowledge and impressions.
+
+You must format your response as JSON and follow this format and keep the order given in input:
+[
+    {"id": 5, "scale": 1, "magnitude": 1, "potential": 1, "novelty": 1, "reliability": 1},
+    {"id": 3, "scale": 1, "magnitude": 1, "potential": 1, "novelty": 1, "reliability": 1},
+    ...
+]
+
+The id field of the output must match the id from the articles list I gave you.
+
+If for some reason you cannot scale one of the articles (for example if the article is not correctly named, incomplete, or incoherent), the article JSON item must be :
+{"id": 3, "error": "Description of the problem"}
