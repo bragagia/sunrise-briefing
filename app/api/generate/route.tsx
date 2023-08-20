@@ -141,10 +141,10 @@ Reliability:
 
 You don't have access to the sources so you have to guess their reliability based on your own knowledge and impressions.
 
-You must format your response as JSON and follow this format:
+You must format your response as JSON and follow this format and keep the order given in input:
 [
-    {"id": 1, "scale": 1, "magnitude": 1, "potential": 1, "novelty": 1, "reliability": 1},
-    {"id": 2, "scale": 1, "magnitude": 1, "potential": 1, "novelty": 1, "reliability": 1},
+    {"id": 5, "scale": 1, "magnitude": 1, "potential": 1, "novelty": 1, "reliability": 1},
+    {"id": 3, "scale": 1, "magnitude": 1, "potential": 1, "novelty": 1, "reliability": 1},
     ...
 ]
 
@@ -177,7 +177,7 @@ If for some reason you cannot scale one of the articles (for example if the arti
 
       const chat_completion: OpenAI.Chat.ChatCompletion =
         await openai.chat.completions.create({
-          model: 'gpt-3.5-turbo-16k',
+          model: 'gpt-4',
           messages: [
             { role: 'user', content: newsList },
             { role: 'user', content: RANKER_PROMPT },
@@ -199,9 +199,9 @@ If for some reason you cannot scale one of the articles (for example if the arti
 
       if (newsAnalysises.length != newsBatch.length) {
         console.log(
-          'analysis parsing fail, retry.\n gptInput' +
+          'analysis parsing fail, retry.\n gptInput:\n' +
             newsList +
-            '\n\n gptResponse: ' +
+            '\n\n gptResponse:\n' +
             gptResponse
         );
 
@@ -269,7 +269,7 @@ I want you to summarize the article. Your summary should explain the news in sim
     topFive.map(async (news): Promise<string> => {
       const chat_completion: OpenAI.Chat.ChatCompletion =
         await openai.chat.completions.create({
-          model: 'gpt-3.5-turbo-16k',
+          model: 'gpt-4',
           messages: [
             {
               role: 'user',
@@ -350,9 +350,13 @@ async function sendBriefingMails() {
 }
 
 export async function POST(/*request: Request*/) {
+  console.log('# Fetching news');
   //   await fetchNews();
+  console.log('# Ranking news');
   await rankNews();
+  console.log('# Generating briefing');
   await generateBriefing();
+  console.log('# Sending mails');
   await sendBriefingMails();
 
   return NextResponse.json(
