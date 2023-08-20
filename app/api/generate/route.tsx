@@ -14,7 +14,7 @@ const openai = new OpenAI();
 
 type News = Database['public']['Tables']['news']['Row'];
 
-const fetchNewsOfTheDay = (supabase: SupabaseClient) => {
+const getNewsOfTheDay = (supabase: SupabaseClient) => {
   const yesterday = new Date(Date.now());
   yesterday.setDate(yesterday.getDate() - 1);
 
@@ -153,10 +153,9 @@ The id field of the output must match the id from the articles list I gave you.
 If for some reason you cannot scale one of the articles (for example if the article is not correctly named, incomplete, or incoherent), the article JSON item must be :
 {"id": 3, "error": "Description of the problem"}`;
 
-  const { data: news, error } = await fetchNewsOfTheDay(rootSupabase).neq(
-    'content',
-    ''
-  );
+  const { data: news, error } = await getNewsOfTheDay(rootSupabase)
+    .neq('content', '')
+    .is('scale', null);
   if (error) {
     throw error;
   }
@@ -199,7 +198,12 @@ If for some reason you cannot scale one of the articles (for example if the arti
       const newsAnalysises: NewsAnalysis[] = JSON.parse(gptResponse || '');
 
       if (newsAnalysises.length != newsBatch.length) {
-        console.log('analysis parsing fail, retry');
+        console.log(
+          'analysis parsing fail, retry.\n gptInput' +
+            newsList +
+            '\n\n gptResponse: ' +
+            gptResponse
+        );
 
         ok = false;
         continue;
@@ -209,7 +213,7 @@ If for some reason you cannot scale one of the articles (for example if the arti
         newsAnalysises.map(async (newsAnalysis) => {
           if (newsAnalysis.error) {
             console.log(
-              `analysis of news ${newsAnalysis} failed: ${newsAnalysis.error}`
+              `analysis of news ${newsAnalysis.id} failed: ${newsAnalysis.error}`
             );
             return;
           }
@@ -250,7 +254,7 @@ I want you to summarize the article. Your summary should explain the news in sim
   const WRITE_BRIEFING_PROMPT =
     "I gave you 5 news summary. I want you to write a daily briefing using those news. You can rewrite them as you want, but keep it as clear as possible and efficient, while keeping as much information from the source as you can. Emphasize for each news why it's important. Start the briefing with a greating and end with a closing. You can order the news by the level of importance you think they have.";
 
-  const { data: allNews, error } = await fetchNewsOfTheDay(rootSupabase).not(
+  const { data: allNews, error } = await getNewsOfTheDay(rootSupabase).not(
     'scale',
     'is',
     null
@@ -346,7 +350,7 @@ async function sendBriefingMails() {
 }
 
 export async function POST(/*request: Request*/) {
-  await fetchNews();
+  //   await fetchNews();
   await rankNews();
   await generateBriefing();
   await sendBriefingMails();
