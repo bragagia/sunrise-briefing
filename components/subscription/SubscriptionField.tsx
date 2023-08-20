@@ -24,6 +24,8 @@ export default function SubscriptionField({
   const [subscriptionDisabled, setSubscriptionDisabled] = useState(true);
   const captchaRef = useRef<ReCAPTCHA>(null);
 
+  const isDevEnv = process.env.NODE_ENV == 'development';
+
   const onChange = (e: any) => {
     const value = e.target.value;
     setMail(value);
@@ -37,30 +39,36 @@ export default function SubscriptionField({
     setSubscriptionDisabled(true);
     setError('');
 
-    const token = await captchaRef.current?.executeAsync();
+    if (!isDevEnv) {
+      const token = await captchaRef.current?.executeAsync();
 
-    if (token) {
-      const res = await fetch(
-        `${window.location.host}/api/verify-captcha-token`,
-        {
+      if (token) {
+        const res = await fetch('/api/verify-captcha-token', {
           method: 'POST',
           body: JSON.stringify({
             token,
           }),
+        });
+
+        if (res.status != 200) {
+          setError(
+            "Nous n'avons pas réussi à confirmer que vous n'êtes pas un robot."
+          );
+          return;
         }
-      );
 
-      const data = await res.json();
+        const data = await res.json();
 
-      if (!data.isValidToken) {
-        setError(
-          "Nous n'avons pas réussi à confirmer que vous n'êtes pas un robot."
-        );
+        if (!data.isValidToken) {
+          setError(
+            "Nous n'avons pas réussi à confirmer que vous n'êtes pas un robot."
+          );
+          return;
+        }
+      } else {
+        setError("Veuillez d'abord prouver que vous n'êtes pas un robot.");
         return;
       }
-    } else {
-      setError("Veuillez d'abord prouver que vous n'êtes pas un robot.");
-      return;
     }
 
     const { error } = await supabase.from('subscriptions').insert({
@@ -86,7 +94,7 @@ export default function SubscriptionField({
       <div className="flex flex-col py-10">
         <p>
           🎉 Congrats! You will receive everyday your daily dose of condensed
-          news! 🎉{' '}
+          news! 🎉
         </p>
         <p>🙏 Thanks for supporting Sunrise Briefing 🙏</p>
       </div>
@@ -115,11 +123,15 @@ export default function SubscriptionField({
           Subscribe
         </button>
       </div>
-      <ReCAPTCHA
-        sitekey={process.env.NEXT_PUBLIC_CAPTCHA_SITE_KEY || ''}
-        size="invisible"
-        ref={captchaRef}
-      />
+      {isDevEnv ? (
+        ''
+      ) : (
+        <ReCAPTCHA
+          sitekey={process.env.NEXT_PUBLIC_CAPTCHA_SITE_KEY || ''}
+          size="invisible"
+          ref={captchaRef}
+        />
+      )}
       {error ? <p className="text-red-700 text-sm">{error}</p> : null}
     </form>
   );
