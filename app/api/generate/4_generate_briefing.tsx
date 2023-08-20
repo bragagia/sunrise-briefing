@@ -15,6 +15,18 @@ export async function generateBriefing() {
     { supabaseKey: process.env.SUPABASE_SERVICE_KEY }
   );
 
+  const date = new Date(Date.now());
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
+  const formatedDate = date.toLocaleDateString('fr-FR', options);
+
+  var prompt: string = WRITE_BRIEFING_PROMPT.toString();
+  prompt.replace('TODAY_DATE', formatedDate);
+
   const { data: topFive, error } = await getNewsOfTheDay(rootSupabase).not(
     'digest',
     'is',
@@ -32,7 +44,7 @@ export async function generateBriefing() {
   var messages = topFiveChatMessages;
   messages.push({
     role: 'user',
-    content: WRITE_BRIEFING_PROMPT,
+    content: prompt,
   });
   const chat_completion: OpenAI.Chat.ChatCompletion =
     await openai.chat.completions.create({

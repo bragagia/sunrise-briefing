@@ -17,6 +17,7 @@ export default async function Home() {
     .from('briefings')
     .select()
     .limit(1)
+    .order('id', { ascending: false })
     .single();
 
   if (error != null || briefing == null) {
@@ -33,6 +34,13 @@ export default async function Home() {
 
       {briefing.content.split('\n\n').map((paragraph, index) => {
         const color = getParagraphBgColorFromPosition(index);
+        var title = '';
+
+        if (paragraph.substring(0, 5) == '#### ') {
+          var split = paragraph.split(/\n(.*)/s);
+          title = split[0].substring(5);
+          paragraph = split[1];
+        }
 
         return (
           <div key={index} className="max-w-2xl mx-auto">
@@ -40,7 +48,8 @@ export default async function Home() {
               className="py-5 px-8 border-b-black border-b"
               style={{ backgroundColor: color.string() }}
             >
-              <p className="">{paragraph}</p>
+              {title != '' ? <h3 className="font-bold">{title}</h3> : ''}
+              <p className="text-gray-800">{paragraph}</p>
             </div>
           </div>
         );
