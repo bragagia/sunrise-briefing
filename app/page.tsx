@@ -36,17 +36,17 @@ export default async function Home() {
       <SubscriptionField className="my-6" />
 
       {paragraphs.map((paragraph, index) => {
-        const color = getParagraphBgColorFromPosition(index);
-        var title = '';
+        var isLast = index + 1 == paragraphs.length;
+        var isFirst = index == 0;
 
+        const color = getParagraphBgColorFromPosition(index, isLast);
+
+        var title = '';
         if (paragraph.substring(0, 5) == '#### ') {
           var split = paragraph.split(/\n(.*)/s);
           title = split[0].substring(5);
           paragraph = split[1];
         }
-
-        var isLast = index + 1 == paragraphs.length;
-        var isFirst = index == 0;
 
         return (
           <div key={index} className="max-w-2xl mx-auto">

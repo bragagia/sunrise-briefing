@@ -2,7 +2,6 @@ import {
   Body,
   Column,
   Container,
-  Head,
   Heading,
   Html,
   Img,
@@ -14,7 +13,6 @@ import {
 } from '@react-email/components';
 import tailwindConfig from '../tailwind.config';
 
-import * as React from 'react';
 import { getParagraphBgColorFromPosition } from '../utils/colors';
 import { SharedHeaders } from './SharedHeaders';
 
@@ -57,7 +55,10 @@ export const Briefing = ({
 
           <Container className="w-full max-w-2xl text-justify text-gray-900 whitespace-pre-line font-hanken-grotesk mb-32">
             {briefing.map((paragraph, index) => {
-              const color = getParagraphBgColorFromPosition(index);
+              const color = getParagraphBgColorFromPosition(
+                index,
+                index + 1 == briefing.length
+              );
 
               return (
                 <Container key={index} className="mx-auto w-full max-w-full">

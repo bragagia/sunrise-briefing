@@ -8,12 +8,21 @@ const COLOR_MAP = [
   '#F5A125',
   '#DFB583',
   '#F4D4A3',
-  '#ABD9E8',
-  '#23ADD9',
 ];
 
-export const getParagraphBgColorFromPosition = (position: number) => {
-  const color = Color(COLOR_MAP[position % COLOR_MAP.length]);
+// Unused first blue : '#ABD9E8',
+
+const LAST_COLOR = '#23ADD9';
+
+export const getParagraphBgColorFromPosition = (
+  position: number,
+  isLast: boolean
+) => {
+  var color = Color(LAST_COLOR);
+
+  if (!isLast) {
+    color = Color(COLOR_MAP[position % COLOR_MAP.length]);
+  }
 
   return color.fade(0.8);
 };
