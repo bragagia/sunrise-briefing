@@ -58,7 +58,11 @@ export default async function Home() {
               }
               style={{ backgroundColor: color.string() }}
             >
-              {title != '' ? <h3 className="font-bold">{title}</h3> : ''}
+              {title != '' ? (
+                <h3 className="font-bold text-left">{title}</h3>
+              ) : (
+                ''
+              )}
               <p className="text-gray-800">{paragraph}</p>
             </div>
           </div>
