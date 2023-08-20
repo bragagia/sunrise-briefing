@@ -37,13 +37,7 @@ export default function SubscriptionField({
     setSubscriptionDisabled(true);
     setError('');
 
-    if (!captchaRef.current) {
-      setError('Internal error: Missing captcha ref');
-      return;
-    }
-    captchaRef.current.execute();
-
-    const token = captchaRef?.current?.getValue();
+    const token = await captchaRef.current?.executeAsync();
 
     if (token) {
       const res = await fetch(

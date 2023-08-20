@@ -37,7 +37,7 @@ export default async function RootLayout({
               />
 
               <div>
-                <h1 className="text-3xl md:text-7xl text-center font-playfair-display">
+                <h1 className="text-5xl sm:text-6xl md:text-7xl text-center font-playfair-display">
                   Sunrise Briefing
                 </h1>
 
