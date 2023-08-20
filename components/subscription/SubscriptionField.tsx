@@ -24,7 +24,7 @@ export default function SubscriptionField({
   const [subscriptionDisabled, setSubscriptionDisabled] = useState(true);
   const captchaRef = useRef<ReCAPTCHA>(null);
 
-  const isDevEnv = process.env.NODE_ENV == 'development';
+  const isDevEnv = true; // TODO: disable only in dev env: isDevEnv = process.env.NODE_ENV == 'development';
 
   const onChange = (e: any) => {
     const value = e.target.value;

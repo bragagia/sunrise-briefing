@@ -41,10 +41,13 @@ export async function generateDigests() {
         });
       const gptResponse = await chat_completion.choices[0].message.content;
 
-      rootSupabase
+      const { error } = await rootSupabase
         .from('news')
         .update({ digest: gptResponse })
         .eq('id', news.id);
+      if (error) {
+        throw error;
+      }
     })
   );
 }

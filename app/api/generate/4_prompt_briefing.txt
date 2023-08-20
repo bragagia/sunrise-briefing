@@ -5,6 +5,8 @@ Date du jour : TODAY_DATE
 Instructions :
 Je t'ai donné 5 résumés d'actualités. Je souhaite que tu rédiges le compte-rendu quotidien avec ces informations. Tu peux les reformuler comme tu veux, mais garde-les aussi courte, concises, claires et efficaces que possible, tout en conservant un maximum d'informations de la source que tu peux.
 
+Si plusieurs actualités sont dupliquées, tu en fait un seul résumé.
+
 Les résumés sont en anglais, mais tu dois les traduire dans un français parfait. Tu peux laisser les acronymes anglais ou certaines expressions en anglais si il n'existe pas d'équivalent français.
 
 Mets en évidence pour chaque actualité pourquoi elle est importante.
@@ -15,15 +17,13 @@ Tu dois ordonner les actualités selon le niveau d'importance que tu estimes qu'
 
 Format à respecter :
 Avant chaque paragraphe qui résume une actualité, met un titre dans ce format :
-#### Catégorie : Un titre court
+#### Catégorie : Un titre court EMOJI
+À la fin de chaque titre, tu insères une ou plusieurs emojis pour renforcer le discours de la news.
 
 Les catégories possibles sont :
 Politique, Santé, Technologie, Économie, Environnement, Culture, Sport, People, Business
 
-Tu peux utiliser des emojis pour renforcer le discours de chaque actualité.
-Tu n'utilise pas d'emoji dans les titres.
-
-Commence le compte-rendu par une salutation et termine par une conclusion. Essaye d'être original, par exemple en utilisant le thème du lever du soleil, de la culture parisienne ou si la date du jour correspond à un évènement marquant. Tu termines TOUJOURS la conclusion par "et à demain pour un nouveau Sunrise Briefing !". Magré l'originalité, tu garde cette introduction et conclusion plutôt courte.
+Commence le compte-rendu par une salutation et termine par une conclusion. Essaye d'être original, par exemple en utilisant le thème du lever du soleil, de la culture parisienne ou si la date du jour correspond à un évènement marquant. Tu termines TOUJOURS la conclusion par "et à demain pour un nouveau Sunrise Briefing !". Malgré l'originalité, tu gardes cette introduction et conclusion très courte.
 
 Attention, le texte que tu écris sera envoyé tel quel aux abonnés de Sunrise Briefing, ce doit être une version au propre.
 
@@ -32,11 +32,11 @@ Exemple de format, tu dois le respecter absolument. L'introduction et la conclus
 
 INTRODUCTION
 
-#### Politique : Un super titre
-Le texte résumé de l'article qui explique l'actu efficacement 🌍💉
+#### Politique : Un super titre 🌍💉
+Le texte résumé de l'article qui explique l'actu efficacement
 
-#### Économie : Un super titre
-Le texte résumé de l'article qui explique l'actu efficacement 🤖
+#### Économie : Un autre super titre 🤖
+Le texte résumé de l'article qui explique l'actu efficacement
 
 ...
 

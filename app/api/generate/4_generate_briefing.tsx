@@ -38,7 +38,10 @@ export async function generateBriefing() {
 
   var topFiveChatMessages: OpenAI.Chat.Completions.CreateChatCompletionRequestMessage[] =
     topFive.map((news) => {
-      return { role: 'user', content: news.digest };
+      return {
+        role: 'user',
+        content: `Source: ${news.source}\n$Title: ${news.title}\nContent: ${news.digest}`,
+      };
     });
 
   var messages = topFiveChatMessages;
