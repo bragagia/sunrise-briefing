@@ -46,12 +46,15 @@ export default async function Home() {
         }
 
         var isLast = index + 1 == paragraphs.length;
+        var isFirst = index == 0;
 
         return (
           <div key={index} className="max-w-2xl mx-auto">
             <div
               className={
-                'py-5 px-8 ' + (!isLast ? 'border-b-black border-b' : '')
+                'py-5 px-8 ' +
+                (isFirst ? 'rounded-t-lg ' : '') +
+                (isLast ? 'rounded-b-lg' : 'border-b-black border-b')
               }
               style={{ backgroundColor: color.string() }}
             >

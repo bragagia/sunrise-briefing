@@ -105,17 +105,17 @@ export default function SubscriptionField({
 
   return (
     <form className={'w-full max-w ' + className} onSubmit={onSubscribe}>
-      <div className="flex items-center border-b  text-gray-900 py-2">
+      <div className="flex items-center border-2 border-gray-400 rounded-lg  text-gray-900 overflow-hidden">
         <input
           className={`appearance-none bg-transparent border-none w-full text-${inputColor}-700 mr-3 py-1 px-2 leading-tight focus:outline-none`}
           type="email"
-          placeholder="i-want-sunrise-briefing@mail.com"
+          placeholder="je-veux-mon-sunrise-briefing@gmail.com"
           aria-label="Email"
           value={mail}
           onChange={onChange}
         />
         <button
-          className="flex-shrink-0 bg-gray-900 hover:bg-gray-700 border-gray-900 hover:border-gray-700 text-sm border-4 text-white disabled:bg-gray-400 disabled:border-gray-400  py-1 px-2 rounded"
+          className="flex-shrink-0 h-full bg-gray-900 hover:bg-gray-700 border-gray-900 hover:border-gray-700 text-sm border-4 text-white disabled:bg-gray-400 disabled:border-gray-400  py-1 px-2"
           type="submit"
           onClick={onSubscribe}
           disabled={subscriptionDisabled}
