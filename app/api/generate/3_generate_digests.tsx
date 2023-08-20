@@ -26,8 +26,8 @@ export async function generateDigests() {
 
   const topFive = getTop5NewsOfTheDay(allNews);
 
-  const topFiveDigest = await Promise.all(
-    topFive.map(async (news): Promise<string> => {
+  await Promise.all(
+    topFive.map(async (news) => {
       const chat_completion: OpenAI.Chat.ChatCompletion =
         await openai.chat.completions.create({
           model: 'gpt-4',
@@ -45,8 +45,6 @@ export async function generateDigests() {
         .from('news')
         .update({ digest: gptResponse })
         .eq('id', news.id);
-
-      return gptResponse || '';
     })
   );
 }
