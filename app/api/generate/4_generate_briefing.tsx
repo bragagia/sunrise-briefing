@@ -24,8 +24,10 @@ export async function generateBriefing() {
   };
   const formatedDate = date.toLocaleDateString('fr-FR', options);
 
-  var prompt: string = WRITE_BRIEFING_PROMPT.toString();
-  prompt.replace('TODAY_DATE', formatedDate);
+  var prompt: string = WRITE_BRIEFING_PROMPT.toString().replace(
+    'TODAY_DATE',
+    formatedDate
+  );
 
   const { data: topFive, error } = await getNewsOfTheDay(rootSupabase).not(
     'digest',

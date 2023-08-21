@@ -21,12 +21,12 @@ function getNewsScore({
   scale,
 }: News) {
   return (
-    ((scale || 0) * 0.9 +
-      (magnitude || 0) * 0.9 +
-      (potential || 0) * 0.9 +
-      (novelty || 0) * 0.9 +
-      (reliability || 0) * 1.4) /
-    5
+    ((scale || 0) * 2 +
+      (magnitude || 0) * 1 +
+      (potential || 0) * 1 +
+      (novelty || 0) * 1 +
+      (reliability || 0) * 1.5) /
+    (2 + 1 + 1 + 1 + 1.5)
   );
 }
 
