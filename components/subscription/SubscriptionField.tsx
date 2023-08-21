@@ -120,7 +120,7 @@ export default function SubscriptionField({
           onClick={onSubscribe}
           disabled={subscriptionDisabled}
         >
-          Subscribe
+          S'abonner (gratuitement !)
         </button>
       </div>
       {isDevEnv ? (

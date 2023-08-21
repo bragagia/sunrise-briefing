@@ -18,18 +18,24 @@ export async function fetchNews() {
   function newsApiUrl(pageId: string) {
     const apiUrl = new URL('https://newsdata.io/api/1/news');
     apiUrl.searchParams.append('apiKey', newsApiKey);
-    apiUrl.searchParams.append('page', pageId);
     apiUrl.searchParams.append('domain', newsDomains.join(','));
+
+    if (pageId != '') {
+      apiUrl.searchParams.append('page', pageId);
+    }
 
     return apiUrl;
   }
 
-  let pageId = null;
-
+  let pageId = '';
   do {
     const page = await fetch(newsApiUrl(pageId));
-    const pageJson = await page.json();
 
+    if (page.status != 200) {
+      console.log('Fetch news failed: ' + page.statusText);
+    }
+
+    const pageJson = await page.json();
     pageJson['results'].map(async (news: any) => {
       const { error } = await rootSupabase.from('news').insert({
         published_at: news['pubDate'],
