@@ -57,7 +57,15 @@ export async function rankNews() {
         error: string;
       }
 
-      const newsAnalysises: NewsAnalysis[] = JSON.parse(gptResponse || '');
+      var newsAnalysises: NewsAnalysis[];
+      try {
+        newsAnalysises = JSON.parse(gptResponse || '');
+      } catch (error) {
+        console.log('Parsing error: ' + error);
+
+        ok = false;
+        continue;
+      }
 
       if (newsAnalysises.length != newsBatch.length) {
         console.log(
