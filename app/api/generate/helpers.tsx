@@ -35,3 +35,7 @@ export function getTop5NewsOfTheDay(allNews: News[]) {
 
   return sortedNews.slice(0, 5);
 }
+
+export function sleep(milliseconds: number) {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}

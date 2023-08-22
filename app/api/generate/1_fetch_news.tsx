@@ -1,6 +1,7 @@
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { Database } from '../../../types/supabase';
+import { sleep } from './helpers';
 
 export async function fetchNews() {
   const rootSupabase = createRouteHandlerClient<Database>(
@@ -29,6 +30,8 @@ export async function fetchNews() {
 
   let pageId = '';
   do {
+    console.log('Fetching page: "' + pageId + '"');
+
     const page = await fetch(newsApiUrl(pageId));
 
     if (page.status != 200) {
@@ -36,6 +39,15 @@ export async function fetchNews() {
     }
 
     const pageJson = await page.json();
+
+    if (!pageJson['results']) {
+      console.log(
+        'Wrong result from newsapi: ' + JSON.stringify(pageJson, null, 2)
+      );
+
+      continue;
+    }
+
     pageJson['results'].map(async (news: any) => {
       const { error } = await rootSupabase.from('news').insert({
         published_at: news['pubDate'],
@@ -52,5 +64,7 @@ export async function fetchNews() {
     });
 
     pageId = pageJson['nextPage'];
+
+    await sleep(1000); // prevent overuse
   } while (pageId != null);
 }

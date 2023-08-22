@@ -13,9 +13,9 @@ const verifyEmail = (email: string) => {
 };
 
 export default function SubscriptionField({
-  className,
+  className = '',
 }: {
-  className: string;
+  className?: string;
 }) {
   const supabase = createClientComponentClient<Database>();
   const [mail, setMail] = useState<string>('');
@@ -105,7 +105,12 @@ export default function SubscriptionField({
 
   return (
     <form className={'w-full max-w ' + className} onSubmit={onSubscribe}>
-      <div className="flex items-center border-2 border-gray-400 rounded-lg  text-gray-900 overflow-hidden">
+      <div
+        className={
+          'flex items-center border-2  rounded-lg bg-white bg-opacity-60  text-gray-900 h-10 overflow-hidden ' +
+          (subscriptionDisabled ? 'border-gray-400' : 'border-gray-900')
+        }
+      >
         <input
           className={`appearance-none bg-transparent border-none w-full text-${inputColor}-700 mr-3 py-1 px-2 leading-tight focus:outline-none`}
           type="email"
@@ -115,7 +120,7 @@ export default function SubscriptionField({
           onChange={onChange}
         />
         <button
-          className="flex-shrink-0 h-full bg-gray-900 hover:bg-gray-700 border-gray-900 hover:border-gray-700 text-sm border-4 text-white disabled:bg-gray-400 disabled:border-gray-400  py-1 px-2"
+          className="flex-shrink-0 h-full bg-gray-900 hover:bg-gray-700 text-sm text-white disabled:bg-gray-400  py-1 px-2"
           type="submit"
           onClick={onSubscribe}
           disabled={subscriptionDisabled}

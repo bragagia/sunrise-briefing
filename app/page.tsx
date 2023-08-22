@@ -29,11 +29,36 @@ export default async function Home() {
     );
   }
 
+  const date = new Date(briefing.created_at);
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
+  const formatedDate = date.toLocaleDateString('fr-FR', options);
+
   var paragraphs = briefing.content.split('\n\n');
 
   return (
     <div className="text-justify text-gray-900 whitespace-pre-line font-hanken-grotesk">
-      <SubscriptionField className="my-6" />
+      <div className="my-24 flex flex-col gap-3">
+        <p className="text-sm text-gray-800 text-justify">
+          <b>Chaque matin à 8h00</b>, recevez dans votre boîte mail
+          <b> l'essentiel de l'actualité parisienne</b>.
+        </p>
+
+        <p className="text-sm text-gray-800 text-justify">
+          Fini la lecture sans fin des journaux et réseaux sociaux, on fait le
+          tri et on résume tout pour vous !
+        </p>
+
+        <SubscriptionField />
+      </div>
+
+      <p className="text-center mb-2">
+        Édition du <b>{formatedDate}</b> :
+      </p>
 
       {paragraphs.map((paragraph, index) => {
         var isLast = index + 1 == paragraphs.length;

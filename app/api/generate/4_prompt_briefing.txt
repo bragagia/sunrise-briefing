@@ -13,8 +13,6 @@ Mets en évidence pour chaque actualité pourquoi elle est importante.
 
 Tu commences chaque résumé d'actualité directement, sans introduction comme "En premier lieu, ..."
 
-Tu dois ordonner les actualités selon le niveau d'importance que tu estimes qu'elles ont.
-
 Format à respecter :
 Avant chaque paragraphe qui résume une actualité, met un titre dans ce format :
 #### Catégorie : Un titre court EMOJI
