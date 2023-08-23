@@ -30,12 +30,20 @@ export async function fetchNews() {
 
   let pageId = '';
   do {
+    await sleep(1000); // prevent overuse
+
     console.log('Fetching page: "' + pageId + '"');
 
     const page = await fetch(newsApiUrl(pageId));
 
     if (page.status != 200) {
       console.log('Fetch news failed: ' + page.statusText);
+
+      if (page.status == 429) {
+        await sleep(10000); // Wait 10s because too many request
+      }
+
+      continue;
     }
 
     const pageJson = await page.json();
@@ -64,7 +72,5 @@ export async function fetchNews() {
     });
 
     pageId = pageJson['nextPage'];
-
-    await sleep(1000); // prevent overuse
   } while (pageId != null);
 }
