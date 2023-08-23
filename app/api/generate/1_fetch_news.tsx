@@ -40,7 +40,7 @@ export async function fetchNews() {
       console.log('Fetch news failed: ' + page.statusText);
 
       if (page.status == 429) {
-        await sleep(10000); // Wait 10s because too many request
+        await sleep(60000); // Wait 60s because too many request. Rate limit reset every 15min
       }
 
       continue;

@@ -26,6 +26,10 @@ export async function generateDigests() {
 
   const topFive = getTop5NewsOfTheDay(allNews);
 
+  topFive.map((news, i) => {
+    console.log(i + ': ' + news.title);
+  });
+
   await Promise.all(
     topFive.map(async (news) => {
       const chat_completion: OpenAI.Chat.ChatCompletion =

@@ -31,6 +31,8 @@ export async function rankNews() {
       tries++;
       ok = true;
 
+      console.log('Batch ' + i + ', try ' + tries);
+
       const newsBatch = news.slice(i, i + batchSize);
 
       const newsList = newsBatch
