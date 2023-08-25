@@ -65,8 +65,8 @@ export async function fetchNews() {
         source: news['source_id'],
       });
 
-      if (error) {
-        console.log(news);
+      if (error && error.code != '23505') {
+        console.log("can't save a news: error ", error.message, ' news:', news);
         throw error;
       }
     });
